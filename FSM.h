@@ -3,6 +3,14 @@
 #include <vector>
 #include <iostream>
 
+
+struct TestStruct
+{
+  int x = 0;
+  bool y = 0;
+  std::vector<int> testV;
+};
+
 enum class States
 {
   Init,
@@ -22,14 +30,14 @@ enum class Signals
 //using FuncType = void (FSM::*)(void); // Тип - указатель на функцию-метод класса FSM (пока пустую).
 //             ... void  FSM::X (void)
 
-using FuncType = void (*)(void); // Тип - указатель на глобальную функцию (пока пустую).
+using FuncType = void (*)(TestStruct&); // Тип - указатель на глобальную функцию (пока пустую).
 
-void Run(void);
-void Show();
+void Run(TestStruct&);
+void Show(TestStruct&);
 
 struct Transition
 {
-  States state{};
+  States state = States::Init;
   FuncType func = nullptr;
 };
 
@@ -44,7 +52,8 @@ class FSM
 {
 protected:
 
-  std::vector<std::vector<Transition>> TransitionMatrix = {
+  std::vector<std::vector<Transition>> TransitionMatrix =
+  {
     { {States::Run, Run}, {States::error, nullptr}, {States::error, nullptr} },
     { {States::error, nullptr}, {States::Show, Show}, {States::Show, Show} },
     { {States::Run, Run}, {States::error, nullptr}, {States::error, nullptr} }
@@ -56,7 +65,7 @@ public:
 
   void Reset() { CurrentState = States::Init; }
 
-  void Step(Signals signal)
+  void Step(Signals signal, TestStruct& s)
   {
     if (CurrentState == States::error)
     {
@@ -77,7 +86,7 @@ public:
 
     CurrentState = transition.state;
     if (transition.func)
-      (*transition.func)();
+      (*transition.func)(s);
   }
 
 };

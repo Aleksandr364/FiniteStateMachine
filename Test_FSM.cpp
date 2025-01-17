@@ -4,8 +4,9 @@
 void TestFSM()
 {
   FSM testData;
+  TestStruct s;
 
-  testData.Step(Signals::Start);
-  testData.Step(Signals::Timeout);
-  testData.Step(Signals::Start);
+  testData.Step(Signals::Start, s);
+  testData.Step(Signals::Timeout, s);
+  testData.Step(Signals::Start, s);
 }

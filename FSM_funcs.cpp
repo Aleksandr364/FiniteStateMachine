@@ -1,4 +1,4 @@
 #include "FSM.h"
 
-void Run(void) { std::cout << "\nRun\n"; }
-void Show() { std::cout << "\nShow\n"; }
+void Run(TestStruct& s) { std::cout << "\nRun\n"; }
+void Show(TestStruct& s) { std::cout << "\nShow\n"; }
